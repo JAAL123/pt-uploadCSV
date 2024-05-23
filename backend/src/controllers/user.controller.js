@@ -1,5 +1,6 @@
 import { Employee } from "../models/user.model.js";
 import csvToJson from "convert-csv-to-json";
+import { Op } from "sequelize";
 import { unlink } from "fs";
 
 const removeFile = (path) => {
@@ -33,6 +34,24 @@ export const createUserFromCSV = async (req, res) => {
     return res.status(200).json(newEmlpoyees);
   } catch (error) {
     removeFile(file.path);
+    return res.status(500).json({ message: error.message });
+  }
+};
+export const getUsers = async (req, res) => {
+  const name = req.query.q;
+  if (!name) {
+    return res
+      .status(400)
+      .json({ message: "No se ha proporcionado un criterio de búsqueda" });
+  }
+  try {
+    const employeesFound = await Employee.findAll({
+      where: {
+        firstName: { [Op.iLike]: `%${name}%` },
+      },
+    });
+    return res.status(200).json(employeesFound);
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
