@@ -1,0 +1,21 @@
+{
+  "name": "upload-csv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-backend": "cd packages/backend && npm run dev",
+    "start-frontend": "cd packages/frontend && npm run dev",
+    "dev": "concurrently \"npm run start-backend\" \"npm run start-frontend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "packages/frontend",
+    "packages/backend"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

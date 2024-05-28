@@ -48,7 +48,7 @@ function App() {
             <input type="text" className="search-bar" placeholder="buscar..." />
           </div>
           <div className="search-results-container">
-            aca van las cards con los resultados de la busqueda
+            aca van las cards con los resultados de la busqueda de los archivos
           </div>
         </div>
       </div>
