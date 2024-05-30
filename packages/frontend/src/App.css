@@ -84,6 +84,10 @@
   animation: slide-out-top 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
 }
 
+.sb-container{
+  margin-top: 15px;
+}
+
 @-webkit-keyframes slide-out-top {
   0% {
     -webkit-transform: translateY(0);
@@ -139,3 +143,4 @@
     opacity: 1;
   }
 }
+

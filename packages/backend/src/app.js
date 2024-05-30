@@ -12,7 +12,4 @@ app.use(morgan("dev"));
 //rutas
 app.use("/api", userRoutes);
 
-
-
-
 export default app;

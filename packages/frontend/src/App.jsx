@@ -4,7 +4,6 @@ import { useState } from "react";
 
 function App() {
   const [isVisible, setIsVisible] = useState(true);
-
   return (
     <>
       <div className="container">

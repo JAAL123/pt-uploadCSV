@@ -1,11 +1,28 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { uploadRequest } from "../../api/upload";
 
+const UPLOAD_STATUS = {
+  IDLE: "idle", //al iniciar el componente
+  READY: "ready", //cuando el archivo esta listo para ser subido
+  PENDING: "pending", //cuando se esta subiendo el archivo
+  SUCCESS: "success", //cuando el archivo se subio correctamente, y el servidor respondio con un 200
+  ERROR: "error", //cuando el archivo no se subio correctamente o el servidor respondio con un 400
+};
+
 export function Upload({ visible }) {
+  const [uploadStatus, setUploadStatus] = useState(UPLOAD_STATUS.IDLE);
+
+  console.log("uploadStatus:", uploadStatus);
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     console.log(acceptedFiles);
+    if (acceptedFiles.length > 0 && acceptedFiles[0].type === "text/csv") {
+      setUploadStatus(UPLOAD_STATUS.READY);
+    } else {
+      acceptedFiles = [];
+      setUploadStatus(UPLOAD_STATUS.IDLE);
+    }
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
@@ -22,10 +39,13 @@ export function Upload({ visible }) {
     const formData = new FormData();
     formData.append("file", acceptedFiles[0]);
     try {
-      await uploadRequest(formData);
+      setUploadStatus(UPLOAD_STATUS.PENDING);
+      const res = await uploadRequest(formData);
       formData.delete("file");
+      if (res.status === 200) setUploadStatus(UPLOAD_STATUS.SUCCESS);
     } catch (error) {
       console.log(error);
+      setUploadStatus(UPLOAD_STATUS.ERROR);
     }
   };
   return (
@@ -35,8 +55,8 @@ export function Upload({ visible }) {
       <form action="" className="dnd-form" onSubmit={handleSubmit}>
         <div {...getRootProps()} className="dnd">
           <input {...getInputProps()} />
-          {acceptedFiles.length > 0 && acceptedFiles.length === 0 ? (
-            <p> {acceptedFiles[0].name}</p>
+          {uploadStatus === UPLOAD_STATUS.READY ? (
+            <p> {acceptedFiles[0]?.name}</p>
           ) : (
             [
               isDragActive ? (
@@ -49,9 +69,30 @@ export function Upload({ visible }) {
             ]
           )}
         </div>
-        <div className="dnd-button">
-          <button type="submit">Procesar</button>
-        </div>
+        {uploadStatus === UPLOAD_STATUS.READY && (
+          <div className="dnd-button">
+            <button
+              type="submit"
+              disabled={uploadStatus === UPLOAD_STATUS.PENDING}
+            >
+              {uploadStatus === UPLOAD_STATUS.READY
+                ? "Procesar"
+                : "Procesando..."}
+            </button>
+          </div>
+        )}
+        {uploadStatus === UPLOAD_STATUS.PENDING && (
+          <div className="dnd-button">
+            <button
+              type="submit"
+              disabled={uploadStatus === UPLOAD_STATUS.PENDING}
+            >
+              {uploadStatus === UPLOAD_STATUS.READY
+                ? "Procesar"
+                : "Procesando..."}
+            </button>
+          </div>
+        )}
       </form>
     </div>
   );
