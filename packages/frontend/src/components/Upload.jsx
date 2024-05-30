@@ -16,7 +16,6 @@ export function Upload({ visible }) {
   console.log("uploadStatus:", uploadStatus);
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
-    console.log(acceptedFiles);
     if (acceptedFiles.length > 0 && acceptedFiles[0].type === "text/csv") {
       setUploadStatus(UPLOAD_STATUS.READY);
     } else {

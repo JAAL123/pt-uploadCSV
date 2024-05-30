@@ -65,7 +65,7 @@
 .upload-button:hover {
   background-color: #4c4a4a;
 }
-.search-bar {
+.search-bar-input {
   padding: 10px;
   min-width: 300px;
   min-height: 35px;
@@ -78,13 +78,17 @@
   border-color: #fff;
 }
 
+.search-bar {
+  margin: 15px 0;
+}
+
 .slide-out-top {
   -webkit-animation: slide-out-top 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53)
     both;
   animation: slide-out-top 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
 }
 
-.sb-container{
+.sb-container {
   margin-top: 15px;
 }
 
@@ -143,4 +147,3 @@
     opacity: 1;
   }
 }
-
