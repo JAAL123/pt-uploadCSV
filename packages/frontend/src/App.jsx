@@ -53,11 +53,21 @@ function App() {
           </div>
           <div className="search-results-container">
             {searchResults.map((user) => (
-              <div key={user.id} className="search-card">
-                <p>
-                  {user.firstName} {user.lastName}
-                </p>
-                <p>{user.email}</p>
+              <div key={user.id} className="card">
+                <div className="card-header">
+                  <img
+                    src="default.png"
+                    alt="avatar"
+                    className="card-header-img"
+                  />
+                </div>
+                <div className="card-body">
+                  <p className="card-title">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p>{user.department}</p>
+                  <p>{user.email}</p>
+                </div>
               </div>
             ))}
             {searchResults.length === 0 && (
